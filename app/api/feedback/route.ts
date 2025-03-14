@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const { name, mobile, feedback } = await req.json();
 
     const response = await resend.emails.send({
-      from: "fitnum.fit@gmail.com", // Use your verified email
+      from: "support@fitnum.fit", // Use your verified email
       to: "fitnum.fit@gmail.com",
       subject: "New Feedback Received",
       text: `Name: ${name}\nMobile: ${mobile}\nFeedback: ${feedback}`,

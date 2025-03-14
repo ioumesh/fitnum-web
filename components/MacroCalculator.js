@@ -109,7 +109,7 @@ const calculateMacros = ({
 };
 
 const inputClassName =
-  "bg-[#F8F9FF] w-full px-3 py-2 rounded-md border border-gray-300 text-black focus:ring-purple-500 focus:border-purple-500";
+  "bg-[#F8F9FF] w-full px-3 py-2 rounded-md border border-gray-300 text-black focus:ring-green-500 focus:border-green-500";
 
 const MacroCalculator = () => {
   const [formData, setFormData] = useState({
@@ -224,8 +224,8 @@ const MacroCalculator = () => {
         </h2>
         <div>
           {gender && goal && (
-            <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
-              <p className="font-bold text-purple-800 text-lg mb-4">
+            <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+              <p className="font-bold text-green-800 text-lg mb-4">
                 {gender === "male" ? "👨 " : "👩 "}
                 Recommended for {gender === "male" ? "Men" : "Women"} -{" "}
                 {goal
@@ -234,26 +234,26 @@ const MacroCalculator = () => {
                 :
               </p>
               <div className="grid grid-cols-3 gap-2">
-                <div className="text-center p-3 bg-purple-100 rounded">
-                  <p className="text-purple-700 font-semibold">Protein</p>
-                  <p className="text-purple-900 font-bold text-lg">
+                <div className="text-center p-3 bg-green-100 rounded">
+                  <p className="text-green-700 font-semibold">Protein</p>
+                  <p className="text-green-900 font-bold text-lg">
                     {getMacroRecommendation(gender, goal).protein}%
                   </p>
                 </div>
-                <div className="text-center p-3 bg-purple-100 rounded">
-                  <p className="text-purple-700 font-semibold">Carbs</p>
-                  <p className="text-purple-900 font-bold text-lg">
+                <div className="text-center p-3 bg-green-100 rounded">
+                  <p className="text-green-700 font-semibold">Carbs</p>
+                  <p className="text-green-900 font-bold text-lg">
                     {getMacroRecommendation(gender, goal).carbs}%
                   </p>
                 </div>
-                <div className="text-center p-3 bg-purple-100 rounded">
-                  <p className="text-purple-700 font-semibold">Fat</p>
-                  <p className="text-purple-900 font-bold text-lg">
+                <div className="text-center p-3 bg-green-100 rounded">
+                  <p className="text-green-700 font-semibold">Fat</p>
+                  <p className="text-green-900 font-bold text-lg">
                     {getMacroRecommendation(gender, goal).fat}%
                   </p>
                 </div>
               </div>
-              <p className="text-purple-600 text-sm italic mt-3">
+              <p className="text-green-600 text-sm italic mt-3">
                 💡 Select a value within the recommended range based on your
                 activity level
               </p>
@@ -324,7 +324,7 @@ const MacroCalculator = () => {
         <div className="lg:col-span-3">
           <div className="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
             <h1 className="text-3xl font-bold text-black text-center mb-2">
-              <span className="text-5xl text-purple-600">Fitnum</span> Daily
+              <span className="text-5xl text-green-600">Fitnum</span> Daily
               Macro Calculator
             </h1>
             <p className="text-center text-black mb-6 text-xl">
@@ -341,7 +341,7 @@ const MacroCalculator = () => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-black"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-black"
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
@@ -388,7 +388,7 @@ const MacroCalculator = () => {
                       name="heightFeet"
                       value={formData.heightFeet}
                       onChange={handleInputChange}
-                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                       placeholder="Feet"
                       required={formData.heightUnit === "ft"}
                     />
@@ -397,7 +397,7 @@ const MacroCalculator = () => {
                       name="heightInches"
                       value={formData.heightInches}
                       onChange={handleInputChange}
-                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                       placeholder="Inches"
                     />
                   </div>
@@ -408,7 +408,7 @@ const MacroCalculator = () => {
                     name="heightCm"
                     value={formData.heightCm}
                     onChange={handleInputChange}
-                    className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                     placeholder="Enter height in cm"
                     required={formData.heightUnit === "cm"}
                   />
@@ -420,7 +420,7 @@ const MacroCalculator = () => {
                       name="heightUnit"
                       checked={formData.heightUnit === "cm"}
                       onChange={() => toggleHeightInputs("cm")}
-                      className="form-radio h-4 w-4 text-indigo-600"
+                      className="form-radio h-4 w-4 text-green-600"
                     />
                     <span className="ml-2 text-black">Centimeters</span>
                   </label>
@@ -430,7 +430,7 @@ const MacroCalculator = () => {
                       name="heightUnit"
                       checked={formData.heightUnit === "ft"}
                       onChange={() => toggleHeightInputs("ft")}
-                      className="form-radio h-4 w-4 text-indigo-600"
+                      className="form-radio h-4 w-4 text-green-600"
                     />
                     <span className="ml-2 text-black">Feet & Inches</span>
                   </label>
@@ -448,7 +448,7 @@ const MacroCalculator = () => {
                   value={formData.age}
                   onChange={handleInputChange}
                   required
-                  className="mt-1 text-black w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 text-black w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your age"
                 />
               </div>
@@ -462,7 +462,7 @@ const MacroCalculator = () => {
                   name="activityLevel"
                   value={formData.activityLevel}
                   onChange={handleInputChange}
-                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="sedentary">
                     Sedentary (little or no exercise)
@@ -491,7 +491,7 @@ const MacroCalculator = () => {
                   name="goal"
                   value={formData.goal}
                   onChange={handleInputChange}
-                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="lose_weight">Lose Weight</option>
                   <option value="maintain">Maintain Weight</option>
@@ -515,7 +515,7 @@ const MacroCalculator = () => {
                       value={formData.proteinPct}
                       onChange={handleInputChange}
                       required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     />
                   </div>
                   <div>
@@ -528,7 +528,7 @@ const MacroCalculator = () => {
                       value={formData.carbsPct}
                       onChange={handleInputChange}
                       required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     />
                   </div>
                   <div>
@@ -539,7 +539,7 @@ const MacroCalculator = () => {
                       value={formData.fatPct}
                       onChange={handleInputChange}
                       required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     />
                   </div>
                 </div>
@@ -548,7 +548,7 @@ const MacroCalculator = () => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-3 font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-3 font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none cursor-pointer"
               >
                 Calculate Macros
               </button>
@@ -562,7 +562,7 @@ const MacroCalculator = () => {
                     "DISCLAIMER: This calculator is for informational purposes only. The information provided is not medical advice and should not be used as a substitute for professional medical guidance. Always consult with a healthcare provider or registered dietitian before starting any diet or exercise program. By using this calculator, you acknowledge that the creator assumes no responsibility or liability for any consequences resulting from the use of this tool."
                   )
                 }
-                className="text-sm text-purple-600 hover:text-purple-800 underline cursor-pointer"
+                className="text-sm text-green-600 hover:text-green-800 underline cursor-pointer"
               >
                 View Disclaimer
               </button>

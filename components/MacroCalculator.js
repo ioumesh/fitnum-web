@@ -290,21 +290,21 @@ const MacroCalculator = () => {
               <div className="grid grid-cols-3 gap-4 p-2">
                 <div className="text-center p-4 bg-blue-100 rounded-lg shadow">
                   <div className="text-sm text-black">Protein</div>
-                  <div className="mt-1 text-xl font-bold text-black">
+                  <div className="mt-1 md:text-xl font-bold text-black">
                     {result.protein}g
                   </div>
                   <div className="text-sm text-black">{result.proteinPct}%</div>
                 </div>
                 <div className="text-center p-4 bg-green-100 rounded-lg shadow">
                   <div className="text-sm text-black">Carbs</div>
-                  <div className="mt-1 text-xl font-bold text-black">
+                  <div className="mt-1 md:text-xl font-bold text-black">
                     {result.carbs}g
                   </div>
                   <div className="text-sm text-black">{result.carbsPct}%</div>
                 </div>
                 <div className="text-center p-4 bg-yellow-100 rounded-lg shadow">
                   <div className="text-sm text-black">Fat</div>
-                  <div className="mt-1 text-xl font-bold text-black">
+                  <div className="mt-1 md:text-xl font-bold text-black">
                     {result.fat}g
                   </div>
                   <div className="text-sm text-black">{result.fatPct}%</div>

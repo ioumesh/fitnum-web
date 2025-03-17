@@ -1,6 +1,8 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useRef, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 const calculateBMR = (
   weight,
   weightUnit,
@@ -130,6 +132,8 @@ const MacroCalculator = () => {
 
   const [result, setResult] = useState(null);
 
+  const resultRef = useRef(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -174,15 +178,28 @@ const MacroCalculator = () => {
 
     // Check if total is 100
     if (totalPct !== 100) {
-      alert(
+      toast.error(
         `Your macro split percentages total ${totalPct}%. They must add up to exactly 100%.`
       );
       return;
     }
-
     const macros = calculateMacros(formData);
     setResult(macros);
+    // Show success toast
+    toast.success("Macros calculated!");
   };
+
+  // Smooth scrolling effect using requestAnimationFrame
+  useEffect(() => {
+    if (result) {
+      requestAnimationFrame(() => {
+        resultRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, [result]);
 
   const toggleHeightInputs = (unit) => {
     setFormData((prev) => ({
@@ -274,7 +291,7 @@ const MacroCalculator = () => {
 
         {/* Results section */}
         {result && (
-          <div className="bg-gray-100 p-4 rounded-lg mt-8">
+          <div ref={resultRef} className="bg-gray-100 p-4 rounded-lg mt-8">
             <h3 className="text-4xl font-bold text-black text-center">
               Your Daily Macros
             </h3>
@@ -318,268 +335,277 @@ const MacroCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8">
-        {/* Main Form Column */}
-        <div className="lg:col-span-3">
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
-            <h1 className="text-3xl font-bold text-black text-center mb-2">
-              <span className="text-5xl text-green-600">Fitnum</span> Daily
-              Macro Calculator
-            </h1>
-            <p className="text-center text-black mb-6 text-xl">
-              Calculate your daily macros for your fitness goals
-            </p>
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Gender Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Gender
-                </label>
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-black"
-                >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
+      <div className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8">
+          {/* Main Form Column */}
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
+              <h1 className="text-3xl font-bold text-black text-center mb-2">
+                <span className="text-5xl text-green-600">Fitnum</span> Daily
+                Macro Calculator
+              </h1>
+              <p className="text-center text-black mb-6 text-xl">
+                Calculate your daily macros for your fitness goals
+              </p>
 
-              {/* Weight Input */}
-              <div>
-                <label className="block text-sm font-medium text-black">
-                  Weight
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    type="number"
-                    step="0.01"
-                    name="weight"
-                    value={formData.weight}
-                    onChange={handleInputChange}
-                    required
-                    className={`${inputClassName} rounded-l-md bg-white`}
-                    placeholder="Enter your weight"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Gender Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Gender
+                  </label>
                   <select
-                    name="weightUnit"
-                    value={formData.weightUnit}
+                    name="gender"
+                    value={formData.gender}
                     onChange={handleInputChange}
-                    className="inline-flex items-center px-3 py-2 rounded-r-md border border-l-0 border-gray-300 text-black"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-black"
                   >
-                    <option value="kg">kg</option>
-                    <option value="lbs">lbs</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </select>
                 </div>
-              </div>
 
-              {/* Height Input */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Height
-                </label>
-                {formData.heightUnit === "ft" ? (
-                  <div className="flex space-x-2">
+                {/* Weight Input */}
+                <div>
+                  <label className="block text-sm font-medium text-black">
+                    Weight
+                  </label>
+                  <div className="mt-1 flex rounded-md shadow-sm">
                     <input
                       type="number"
-                      name="heightFeet"
-                      value={formData.heightFeet}
+                      step="0.01"
+                      name="weight"
+                      value={formData.weight}
                       onChange={handleInputChange}
-                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
-                      placeholder="Feet"
-                      required={formData.heightUnit === "ft"}
+                      required
+                      className={`${inputClassName} rounded-l-md bg-white`}
+                      placeholder="Enter your weight"
                     />
-                    <input
-                      type="number"
-                      name="heightInches"
-                      value={formData.heightInches}
+                    <select
+                      name="weightUnit"
+                      value={formData.weightUnit}
                       onChange={handleInputChange}
-                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
-                      placeholder="Inches"
-                    />
+                      className="inline-flex items-center px-3 py-2 rounded-r-md border border-l-0 border-gray-300 text-black"
+                    >
+                      <option value="kg">kg</option>
+                      <option value="lbs">lbs</option>
+                    </select>
                   </div>
-                ) : (
+                </div>
+
+                {/* Height Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Height
+                  </label>
+                  {formData.heightUnit === "ft" ? (
+                    <div className="flex space-x-2">
+                      <input
+                        type="number"
+                        name="heightFeet"
+                        value={formData.heightFeet}
+                        onChange={handleInputChange}
+                        className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                        placeholder="Feet"
+                        required={formData.heightUnit === "ft"}
+                      />
+                      <input
+                        type="number"
+                        name="heightInches"
+                        value={formData.heightInches}
+                        onChange={handleInputChange}
+                        className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                        placeholder="Inches"
+                      />
+                    </div>
+                  ) : (
+                    <input
+                      type="number"
+                      step="0.1"
+                      name="heightCm"
+                      value={formData.heightCm}
+                      onChange={handleInputChange}
+                      className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                      placeholder="Enter height in cm"
+                      required={formData.heightUnit === "cm"}
+                    />
+                  )}
+                  <div className="mt-2 space-x-6">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="heightUnit"
+                        checked={formData.heightUnit === "cm"}
+                        onChange={() => toggleHeightInputs("cm")}
+                        className="form-radio h-4 w-4 text-green-600"
+                      />
+                      <span className="ml-2 text-black">Centimeters</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="heightUnit"
+                        checked={formData.heightUnit === "ft"}
+                        onChange={() => toggleHeightInputs("ft")}
+                        className="form-radio h-4 w-4 text-green-600"
+                      />
+                      <span className="ml-2 text-black">Feet & Inches</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Age Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Age
+                  </label>
                   <input
                     type="number"
-                    step="0.1"
-                    name="heightCm"
-                    value={formData.heightCm}
+                    name="age"
+                    value={formData.age}
                     onChange={handleInputChange}
-                    className="w-full text-black px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
-                    placeholder="Enter height in cm"
-                    required={formData.heightUnit === "cm"}
+                    required
+                    className="mt-1 text-black w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter your age"
                   />
-                )}
-                <div className="mt-2 space-x-6">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      name="heightUnit"
-                      checked={formData.heightUnit === "cm"}
-                      onChange={() => toggleHeightInputs("cm")}
-                      className="form-radio h-4 w-4 text-green-600"
-                    />
-                    <span className="ml-2 text-black">Centimeters</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      name="heightUnit"
-                      checked={formData.heightUnit === "ft"}
-                      onChange={() => toggleHeightInputs("ft")}
-                      className="form-radio h-4 w-4 text-green-600"
-                    />
-                    <span className="ml-2 text-black">Feet & Inches</span>
-                  </label>
                 </div>
-              </div>
 
-              {/* Age Input */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-1 text-black w-full px-3 py-2 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your age"
-                />
-              </div>
-
-              {/* Activity Level */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Activity Level
-                </label>
-                <select
-                  name="activityLevel"
-                  value={formData.activityLevel}
-                  onChange={handleInputChange}
-                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                >
-                  <option value="sedentary">
-                    Sedentary (little or no exercise)
-                  </option>
-                  <option value="lightly_active">
-                    Lightly Active (1-3 days/week)
-                  </option>
-                  <option value="moderately_active">
-                    Moderately Active (3-5 days/week)
-                  </option>
-                  <option value="very_active">
-                    Very Active (6-7 days/week)
-                  </option>
-                  <option value="extra_active">
-                    Extra Active (very intense exercise)
-                  </option>
-                </select>
-              </div>
-
-              {/* Goal */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Goal
-                </label>
-                <select
-                  name="goal"
-                  value={formData.goal}
-                  onChange={handleInputChange}
-                  className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                >
-                  <option value="lose_weight">Lose Weight</option>
-                  <option value="maintain">Maintain Weight</option>
-                  <option value="gain_weight">Gain Weight</option>
-                </select>
-              </div>
-
-              {/* Macro Split */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Macro Split (%)
-                </label>
-                <div className="grid grid-cols-3 gap-4 mt-1">
-                  <div>
-                    <label className="block text-sm text-gray-600">
-                      Protein %
-                    </label>
-                    <input
-                      type="number"
-                      name="proteinPct"
-                      value={formData.proteinPct}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600">
-                      Carbs %
-                    </label>
-                    <input
-                      type="number"
-                      name="carbsPct"
-                      value={formData.carbsPct}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600">Fat %</label>
-                    <input
-                      type="number"
-                      name="fatPct"
-                      value={formData.fatPct}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-                    />
-                  </div>
+                {/* Activity Level */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Activity Level
+                  </label>
+                  <select
+                    name="activityLevel"
+                    value={formData.activityLevel}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                  >
+                    <option value="sedentary">
+                      Sedentary (little or no exercise)
+                    </option>
+                    <option value="lightly_active">
+                      Lightly Active (1-3 days/week)
+                    </option>
+                    <option value="moderately_active">
+                      Moderately Active (3-5 days/week)
+                    </option>
+                    <option value="very_active">
+                      Very Active (6-7 days/week)
+                    </option>
+                    <option value="extra_active">
+                      Extra Active (very intense exercise)
+                    </option>
+                  </select>
                 </div>
-                <p id="macro-warning" className="mt-2 text-sm text-red-600"></p>
+
+                {/* Goal */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Goal
+                  </label>
+                  <select
+                    name="goal"
+                    value={formData.goal}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                  >
+                    <option value="lose_weight">Lose Weight</option>
+                    <option value="maintain">Maintain Weight</option>
+                    <option value="gain_weight">Gain Weight</option>
+                  </select>
+                </div>
+
+                {/* Macro Split */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Macro Split (%)
+                  </label>
+                  <div className="grid grid-cols-3 gap-4 mt-1">
+                    <div>
+                      <label className="block text-sm text-gray-600">
+                        Protein %
+                      </label>
+                      <input
+                        type="number"
+                        name="proteinPct"
+                        value={formData.proteinPct}
+                        onChange={handleInputChange}
+                        required
+                        className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-600">
+                        Carbs %
+                      </label>
+                      <input
+                        type="number"
+                        name="carbsPct"
+                        value={formData.carbsPct}
+                        onChange={handleInputChange}
+                        required
+                        className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-600">
+                        Fat %
+                      </label>
+                      <input
+                        type="number"
+                        name="fatPct"
+                        value={formData.fatPct}
+                        onChange={handleInputChange}
+                        required
+                        className="mt-1 text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+                  <p
+                    id="macro-warning"
+                    className="mt-2 text-sm text-red-600"
+                  ></p>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-3 font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none cursor-pointer"
+                >
+                  Calculate Macros
+                </button>
+              </form>
+
+              <div className="mt-4 text-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    alert(
+                      "DISCLAIMER: This calculator is for informational purposes only. The information provided is not medical advice and should not be used as a substitute for professional medical guidance. Always consult with a healthcare provider or registered dietitian before starting any diet or exercise program. By using this calculator, you acknowledge that the creator assumes no responsibility or liability for any consequences resulting from the use of this tool."
+                    )
+                  }
+                  className="text-sm text-green-600 hover:text-green-800 underline cursor-pointer"
+                >
+                  View Disclaimer
+                </button>
               </div>
-
-              <button
-                type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-3 font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none cursor-pointer"
-              >
-                Calculate Macros
-              </button>
-            </form>
-
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() =>
-                  alert(
-                    "DISCLAIMER: This calculator is for informational purposes only. The information provided is not medical advice and should not be used as a substitute for professional medical guidance. Always consult with a healthcare provider or registered dietitian before starting any diet or exercise program. By using this calculator, you acknowledge that the creator assumes no responsibility or liability for any consequences resulting from the use of this tool."
-                  )
-                }
-                className="text-sm text-green-600 hover:text-green-800 underline cursor-pointer"
-              >
-                View Disclaimer
-              </button>
             </div>
           </div>
-        </div>
 
-        {/* Recommendations and Results Column */}
-        <div className="lg:col-span-2">
-          <MacroRecommendationsPanel
-            gender={formData.gender}
-            goal={formData.goal}
-            result={result}
-          />
+          {/* Recommendations and Results Column */}
+          <div className="lg:col-span-2">
+            <MacroRecommendationsPanel
+              gender={formData.gender}
+              goal={formData.goal}
+              result={result}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
